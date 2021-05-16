@@ -1,0 +1,85 @@
+
+<html>
+    <head>
+        <title>
+          paint app
+        </title>
+    </head>
+        <body>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+		<div style="color:red;padding:25px;background-color:aqua; text-align: center;">
+  <h1 style="font-size:30px;"> Paint App </h1></div>
+    
+  <div style="border:5px solid black;"> <canvas id="canvas" width="900" height="500" ></canvas>
+ 
+ 
+  <script>
+    var canvas = document.getElementById("canvas");
+var ele = canvas.getContext("2d");
+
+var mouse = [];
+
+var triangles = [];
+
+function draw() {
+  
+    
+	 ele.fillStyle = RandomColor();
+    ele.fill();
+    for (var aIndex = 0; aIndex < triangles.length; aIndex++) {
+      var triangle = triangles[aIndex];
+      ele.beginPath();
+      ele.moveTo(triangle.a.x, triangle.a.y);
+      ele.lineTo(triangle.b.x, triangle.b.y);
+      ele.lineTo(triangle.c.x, triangle.c.y);
+      ele.closePath();
+      ele.stroke();
+    }
+    
+    if (mouse.length > 0) {
+      ele.beginPath();
+      ele.moveTo(mouse[0].x, mouse[0].y);
+    }
+    if (mouse.length > 1) {
+      ele.lineTo(mouse[1].x, mouse[1].y);
+    }
+    if (mouse.length > 0) {
+      ele.stroke();
+    }
+  }
+  
+canvas.onclick = function eventHandler(event) {
+  
+  mouse.push({
+    x: event.layerX,
+    y: event.layerY
+  });
+  if (mouse.length >= 3) {
+   
+    triangles.push({
+      a: mouse[0],
+      b: mouse[1],
+      c: mouse[2]
+    });
+   
+    mouse = [];
+  }
+  
+  draw();
+};  function clearcanvas() {
+  ele.clearRect(0, 0, canvas.width, canvas.height);
+}function RandomColor() {
+  var colors = ["red",  "aqua", "green", "blue", "yellow","black","gray",];
+  var rand = Math.round(Math.random() * 7);
+  return colors[rand];
+}
+          
+</script>
+
+</div>
+
+<div>
+<button class="button"style="float:right;background-color:aqua;color:red;padding:17px; text-align: center;" onclick="clearcanvas()">Clear</button>
+</div>
+	</body>
+	</html>
